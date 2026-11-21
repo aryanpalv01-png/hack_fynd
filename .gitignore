@@ -1,4 +1,29 @@
+# Dependencies
 node_modules/
+.pnp
+.pnp.js
+
+# Production Build Outputs
 dist/
+dist-ssr/
+build/
+*.local
+
+# Testing Artifacts & Reports
 test-results/
 playwright-report/
+blob-report/
+playwright/.cache/
+
+# Editor & OS Files
+.DS_Store
+Thumbs.db
+*.pem
+
+# Agent & Framework Tooling
+.agent/
+.agents/
+.gemini/
+.gsd/
+adapters/
+scripts/
