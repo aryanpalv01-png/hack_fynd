@@ -1,63 +1,62 @@
-/**
- * PRODUCTS CATALOG
- * ----------------
- * 4 Curated Precision Hardware Products.
- * Preserves all original IDs (prod-mouse, prod-keyboard) for 100% test compatibility.
- */
 export const PRODUCTS = [
   {
     id: 'prod-mouse',
-    sku: 'KL-M01',
     name: 'Wireless Mouse',
-    shortName: 'Mouse',
-    category: 'Input',
-    badge: 'Best Seller',
-    originalPrice: 1299,
+    brand: 'Logitech M235',
+    image: '/images/mouse.jpg',
     price: 799,
-    spec: '2.4 GHz Wireless · 58g Ultra-light · 16K DPI Optical',
-    description: 'Precision ergonomic wireless mouse with honeycomb magnesium structure and 60-hour battery life.',
+    originalPrice: 1299,
+    discount: '38% off',
+    rating: '4.4',
+    ratingCount: '18,420',
+    tag: 'Trending Deal',
+    assured: true,
+    shortDesc: '2.4GHz Wireless with USB Nano Receiver, 1000 DPI Optical Tracking, 12 Month Battery.',
   },
   {
     id: 'prod-keyboard',
-    sku: 'KL-K65',
     name: 'Mechanical Keyboard',
-    shortName: 'Keyboard',
-    category: 'Input',
-    badge: 'Popular',
-    originalPrice: 2199,
+    brand: 'Redragon K552',
+    image: '/images/keyboard.jpg',
     price: 1499,
-    spec: '65% Form Factor · Gateron Tactile · Hot-swappable',
-    description: 'Aircraft-grade aluminum chassis with custom pre-lubed switches and double-shot PBT keycaps.',
+    originalPrice: 2499,
+    discount: '40% off',
+    rating: '4.6',
+    ratingCount: '9,814',
+    tag: 'Hot Deal',
+    assured: true,
+    shortDesc: 'Compact 87-Key Tenkeyless Layout, Dust-Proof Blue Switches, RGB LED Backlit.',
   },
   {
     id: 'prod-headphones',
-    sku: 'KL-H01',
     name: 'Studio Headphones',
-    shortName: 'Headphones',
-    category: 'Audio',
-    badge: 'New Arrival',
-    originalPrice: 3499,
+    brand: 'boAt Rockerz 550',
+    image: '/images/headphones.jpg',
     price: 2499,
-    spec: 'Planar Magnetic · Open-Back · Detachable Braided Cable',
-    description: 'High-resolution audiophile monitoring headphones with memory-foam ear cushions.',
+    originalPrice: 3999,
+    discount: '37% off',
+    rating: '4.5',
+    ratingCount: '24,190',
+    tag: 'Special Price',
+    assured: true,
+    shortDesc: 'Over-Ear Wireless Headphones with 50mm Dynamic Drivers, 20H Playtime, Physical Noise Isolation.',
   },
   {
     id: 'prod-deskmat',
-    sku: 'KL-D90',
-    name: 'Desk Mat Pro',
-    shortName: 'Desk Mat',
-    category: 'Accessories',
-    badge: 'Essential',
-    originalPrice: 899,
+    name: 'Desk Mat',
+    brand: 'AmazonBasics Pro',
+    image: '/images/deskmat.jpg',
     price: 499,
-    spec: '900 × 400 mm · Cordura Spill-Proof · Micro-stitched',
-    description: 'Extended pro gaming and workstation desk pad with textured glide surface and anti-slip rubber base.',
+    originalPrice: 999,
+    discount: '50% off',
+    rating: '4.3',
+    ratingCount: '7,340',
+    tag: 'Lowest Price',
+    assured: true,
+    shortDesc: 'Extended XXL (900x400mm) Waterproof Desk Pad, Non-Slip Rubber Base, Anti-Fray Stitched Edges.',
   },
 ];
 
-export const CATEGORIES = ['All', 'Input', 'Audio', 'Accessories'];
-
 export const SHIPPING_COST = 0;
 export const LOCALE = 'en-IN';
-export const CURRENCY = 'INR';
 export const CURRENCY_SYMBOL = '₹';

@@ -9,7 +9,7 @@ import { CURRENCY_SYMBOL, LOCALE } from '@/constants/products';
  * @returns {string}  e.g. 799 → "₹799"  |  1598 → "₹1,598"
  */
 export const formatCurrency = (amount) => {
-  return `${CURRENCY_SYMBOL}${Number(amount).toLocaleString(LOCALE)}`;
+  return `${CURRENCY_SYMBOL}${Number(amount || 0).toLocaleString(LOCALE)}`;
 };
 
 /**
@@ -32,12 +32,19 @@ export const generateOrderRef = () => {
 /**
  * calcLineTotal
  * -------------
- * Returns the price * quantity for a single cart item.
+ * Returns price * quantity for a single cart item.
+ * Supports both calcLineTotal(item) and calcLineTotal(price, quantity).
  *
- * @param {{ price: number, quantity: number }} item
+ * @param {{ price: number, quantity: number } | number} itemOrPrice
+ * @param {number} [quantity]
  * @returns {number}
  */
-export const calcLineTotal = (item) => item.price * item.quantity;
+export const calcLineTotal = (itemOrPrice, quantity) => {
+  if (typeof itemOrPrice === 'object' && itemOrPrice !== null) {
+    return (Number(itemOrPrice.price) || 0) * (Number(itemOrPrice.quantity) || 0);
+  }
+  return (Number(itemOrPrice) || 0) * (Number(quantity) || 1);
+};
 
 /**
  * calcOrderTotal
@@ -48,27 +55,23 @@ export const calcLineTotal = (item) => item.price * item.quantity;
  * @returns {number}
  */
 export const calcOrderTotal = (cart) =>
-  cart.reduce((acc, item) => acc + calcLineTotal(item), 0);
+  cart.reduce((sum, item) => sum + calcLineTotal(item), 0);
 
 /**
  * formatTimestamp
- * ----------------
- * Returns a readable IST timestamp from a Date object.
+ * ---------------
+ * Formats a Date object into human-readable Indian local time.
+ * e.g. "21 Nov 2026, 02:45 PM"
  *
- * @param {Date} [date=new Date()]
- * @returns {string}  e.g. "21 Nov 2026, 12:34:56 IST"
+ * @param {Date} date
+ * @returns {string}
  */
-export const formatTimestamp = (date = new Date()) => {
-  const datePart = date.toLocaleDateString('en-IN', {
+export const formatTimestamp = (date) =>
+  date.toLocaleString('en-IN', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
-  });
-  const timePart = date.toLocaleTimeString('en-IN', {
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
+    hour12: true,
   });
-  return `${datePart}, ${timePart} IST`;
-};

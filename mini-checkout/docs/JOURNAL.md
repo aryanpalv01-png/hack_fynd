@@ -1,65 +1,38 @@
-# Mini Checkout — Project Journal
+# Engineering & Architecture Journal — Mini Checkout
 
-> **Purpose**: Living record of every architectural decision, feature implementation, UI refinement, and test outcome for the Kinetic Labs checkout application.
+## Session 01: Core Requirements & Business Logic
+- Established project baseline with React 18, Vite, and Playwright.
+- Implemented state management hook `useCart.js`:
+  - Enforced synchronous idempotency locking via `useRef(false)` paired with `isSubmitting` state.
+  - Cart derivation: `calcOrderTotal` and `calcLineTotal` compute directly from state on render, eliminating stale total bugs.
+  - Defensive validation: whitespace trimming on customer name and empty cart checks.
 
----
+## Session 02: Flipkart / Myntra E-Commerce Checkout Experience
+- Rebranded to **FlipStore** (authentic Indian e-commerce checkout standard).
+- Implemented Flipkart signature UI elements:
+  - Header in `#2874f0` with `Explore Plus ✦`.
+  - Multi-step checkout progress bar (`1. LOGIN` → `2. DELIVERY ADDRESS` → `3. ORDER SUMMARY` → `4. PAYMENT`).
+  - Delivery address card with customer name input and `HOME` delivery preview.
+  - Order summary cart items with RetailNet Assured tag, delivery promise, and stepper.
+  - Iconic `PRICE DETAILS` sidebar with discounts, free delivery, total, and green savings strip.
+  - Signature `#fb641b` orange `PLACE ORDER` button.
+  - Order confirmation screen with order reference, tracking stepper, and item breakdown.
 
-## 1. Project Overview
-
-| Field | Value |
-|---|---|
-| **Project Name** | Kinetic Labs Store — Mini Checkout |
-| **Domain** | Premium E-Commerce Checkout (Single-Page App) |
-| **Tech Stack** | React 18 + Vite 5 + Lucide React + Playwright |
-| **Currency** | INR (₹) with Indian Number Grouping |
-| **Catalog** | 4 Curated Tech Instruments (Input, Audio, Accessories) |
-| **Status** | ✅ 9/9 Playwright Tests Passing |
-
----
-
-## 2. Catalog & Products (4 Curated Tech Instruments)
-
-| ID | SKU | Product Name | Category | Badge | Price | Key Spec |
-|---|---|---|---|---|---|---|
-| `prod-mouse` | `KL-M01` | **Wireless Mouse** | Input | Best Seller | ₹799 | 2.4 GHz Wireless · 58g Ultra-light · 16K DPI Optical |
-| `prod-keyboard` | `KL-K65` | **Mechanical Keyboard** | Input | Popular | ₹1,499 | 65% Form Factor · Gateron Tactile · Hot-swappable |
-| `prod-headphones` | `KL-H01` | **Studio Headphones** | Audio | New Arrival | ₹2,499 | Planar Magnetic · Open-Back · Detachable Braided Cable |
-| `prod-deskmat` | `KL-D90` | **Desk Mat Pro** | Accessories | Essential | ₹499 | 900 × 400 mm · Cordura Spill-Proof · Micro-stitched |
-
-*Note: All original test hooks (`prod-mouse`, `prod-keyboard`, and their corresponding prices ₹799 and ₹1,499) are strictly preserved.*
-
----
-
-## 3. UI/UX Architecture & Professional Features
-
-### 3.1 Clean, Uncluttered Design
-- **Eliminated Abstract Filler:** Stripped out robotic or technical jargon (e.g. "TERMINAL READY", "FIG 01") in favor of crisp, intuitive e-commerce terminology ("Curated Products", "Shopping Cart", "Order Summary").
-- **Visual Vector Art:** Handcrafted 4 pure SVG blueprint illustrations for each item, guaranteeing zero broken external image links.
-- **Typography:** `Plus Jakarta Sans` for clean, modern headings and body; `JetBrains Mono` for tabular prices, SKUs, and order reference numbers.
-
-### 3.2 High-Utility Interactive Features
-1. **Interactive Category Filter Bar:** Filter by `All`, `Input`, `Audio`, and `Accessories` seamlessly without page reloading.
-2. **Tactile Micro-Interactions:** "Add to Cart" button triggers an instant checkmark transition ("Added") to provide clear visual confirmation.
-3. **Copy Order Reference:** Post-checkout confirmation includes a one-click clipboard copy button with check feedback.
-4. **Trust & Delivery Badges:** "Ships within 24h", "256-Bit SSL Encrypted", and "7-Day Return Guarantee".
-5. **Real-time Live Math Indicator:** Visual status badge confirming live dynamic calculation.
-
----
-
-## 4. Test Verification Summary
-
-```text
-Running 9 tests using 2 workers
-
-  ✓  TC-01: Successful checkout produces a single confirmation and order reference
-  ✓  TC-02: Blank name blocks checkout and preserves cart state
-  ✓  TC-03: Incrementing quantity updates line total and order total correctly
-  ✓  TC-04: Empty cart blocks checkout and preserves customer name input
-  ✓  TC-05: Decrement to zero removes item from cart entirely
-  ✓  TC-06: Rapid double-click on Place Order produces exactly one confirmation
-  ✓  TC-07: Remove button deletes item regardless of quantity
-  ✓  TC-08: Adding same product twice increments quantity instead of duplicating row
-  ✓  TC-09: Start New Order resets all state cleanly
-
-9 passed (15.2s)
-```
+## Session 03: Production Refinements (Search, Real Photography & Layout Polish)
+1. **Functional Search Bar**:
+   - Wired live search input in header (`.fk-search-input`) with real-time filtering across name, brand, specs, and tags.
+   - Added search results count banner, clear button (`✕`), and friendly empty search state with a "View All Products" button.
+2. **Real Product Photography**:
+   - Replaced all SVG vectors with high-resolution, photographic product images bundled locally in `/public/images/`:
+     - `mouse.jpg`: Ergonomic wireless mouse on studio surface
+     - `keyboard.jpg`: 87-key tenkeyless mechanical keyboard
+     - `headphones.jpg`: Over-ear black studio headphones
+     - `deskmat.jpg`: Extended felt wool desk mat setup
+   - Styled both catalog deal cards and in-cart item thumbnails with high-resolution photography.
+3. **Header Cleanup**:
+   - Removed the redundant top-right cart button as requested.
+4. **Sticky Footer & Visual Stepper**:
+   - Solved footer floating issue by enforcing flexbox full-height viewport pinning (`min-height: 100vh`, `margin-top: auto`).
+   - Added clear circular checkmarks (`✓`) and active stage indicators.
+5. **Test Suite Verification**:
+   - All 9 Playwright end-to-end tests continue to pass with 100% green status (9.0s).
