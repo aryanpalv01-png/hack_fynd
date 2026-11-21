@@ -12,7 +12,7 @@
 
 In accordance with the hackathon specification ("Source code, a README with run and browser-test steps, your test plan, and the results. Report real defects if found; don't invent one to satisfy the brief"):
 
-1. **Source Code**: Single-page e-commerce checkout built with React 18, Vite, and responsive Flipkart/Myntra styling. Located in [`mini-checkout/`](./mini-checkout/).
+1. **Source Code**: Single-page e-commerce checkout built with React 18, Vite, and responsive . Located in [`mini-checkout/`](./mini-checkout/).
 2. **README with Run and Browser-Test Steps**: Step-by-step reproduction instructions for running the application locally, executing automated tests across multiple browser engines, and viewing interactive HTML reports.
 3. **QA Test Plan**: Comprehensive QA test plan with risk prioritization matrix (P0 to P3), manual exploratory testing logs (Empty Cart and Double Click), and real defect logs with evidence. Located at [`TEST_PLAN.md`](./TEST_PLAN.md) and [`mini-checkout/TEST_PLAN.md`](./mini-checkout/TEST_PLAN.md).
 4. **Test Results**: 30 automated cross-browser Playwright test cases passing across 3 engines (Chromium, Firefox, Mobile Chrome), verifying the 3 core required checks plus 7 defensive edge-case guards.
