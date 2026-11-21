@@ -1,6 +1,7 @@
 # FlipStore Checkout — Single-Page Mini Checkout & Multi-Browser Test Suite
 
-> **Branch:** `test/cross-browser-suite`  
+> **Branch:** `main`  
+> **Live Production URL:** [https://mini-checkout-beryl.vercel.app](https://mini-checkout-beryl.vercel.app)  
 > A production-grade single-page checkout application designed to Indian e-commerce standards (**Flipkart & Myntra** style), thoroughly validated with an automated cross-browser Playwright test matrix covering **Chromium (Chrome / Brave / Edge), Gecko (Firefox), WebKit (Safari), and Mobile Chrome (Pixel 5)**.
 
 ---

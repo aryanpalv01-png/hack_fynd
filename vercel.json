@@ -1,0 +1,4 @@
+{
+  "buildCommand": "cd mini-checkout && npm install && npm run build",
+  "outputDirectory": "mini-checkout/dist"
+}

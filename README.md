@@ -1,6 +1,7 @@
 # FlipStore — Production Single-Page Checkout & Multi-Browser Test Suite
 
 > **Hackathon Submission:** Mini Checkout and Browser Test Suite  
+> **Live Production URL:** [https://mini-checkout-beryl.vercel.app](https://mini-checkout-beryl.vercel.app)  
 > **Repository:** [https://github.com/aryanpalv01-png/hack_fynd](https://github.com/aryanpalv01-png/hack_fynd)  
 > **Branch:** `main`  
 > **Automated Test Results:** **27 / 27 PASS (100% Green)** across Chromium, Gecko (Firefox), and Mobile Chrome (Pixel 5).
