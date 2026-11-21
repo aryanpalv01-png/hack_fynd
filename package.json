@@ -1,0 +1,15 @@
+{
+  "name": "fynd-hackathon",
+  "private": true,
+  "description": "Mini Checkout and Browser Test Suite — React 18, Vite & Playwright Multi-Browser Suite",
+  "scripts": {
+    "dev": "npm --prefix mini-checkout run dev",
+    "build": "npm --prefix mini-checkout run build",
+    "test": "npm --prefix mini-checkout test",
+    "test:chromium": "npm --prefix mini-checkout run test:chromium",
+    "test:firefox": "npm --prefix mini-checkout run test:firefox",
+    "test:mobile": "npm --prefix mini-checkout run test:mobile",
+    "test:ui": "npm --prefix mini-checkout run test:ui",
+    "test:report": "npm --prefix mini-checkout run test:report"
+  }
+}

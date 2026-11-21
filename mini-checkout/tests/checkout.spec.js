@@ -21,6 +21,7 @@ const loc = (page) => ({
   nameInput:       page.getByTestId('customer-name-input'),
   placeOrderBtn:   page.getByTestId('place-order-btn'),
   validationError: page.getByTestId('validation-error'),
+  toast:           page.getByTestId('toast-notification'),
   confirmation:    page.getByTestId('order-confirmation'),
   orderRef:        page.getByTestId('order-reference'),
   orderTotal:      page.getByTestId('order-total'),
@@ -230,6 +231,32 @@ test.describe('Mini Checkout — Customer Journey', () => {
     await expect(L.nameInput).toHaveValue('');
     await expect(L.cartItemMouse).not.toBeVisible();
     await expect(L.orderTotal).toHaveText('₹0');
+  });
+
+  test('TC-10: Floating toaster notification appears on validation failure and re-triggers on repeated clicks', async ({ page }) => {
+    const L = loc(page);
+
+    // Initial click with empty cart
+    await L.placeOrderBtn.click();
+
+    // Toaster should be visible with cart empty message
+    await expect(L.toast).toBeVisible();
+    await expect(L.toast).toContainText('Your Cart is Empty!');
+
+    // Second click — toaster must still be visible and re-triggered
+    await L.placeOrderBtn.click();
+    await expect(L.toast).toBeVisible();
+    await expect(L.toast).toContainText('Your Cart is Empty!');
+
+    // Add item to cart
+    await L.addMouse.click();
+
+    // Try placing order without customer name
+    await L.placeOrderBtn.click();
+
+    // Toaster should now show Full Name required
+    await expect(L.toast).toBeVisible();
+    await expect(L.toast).toContainText('Full Name is Required!');
   });
 
 });
