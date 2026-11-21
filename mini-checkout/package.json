@@ -3,12 +3,17 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Production-grade mini e-commerce checkout page — React + Vite + Playwright",
+  "description": "Production-grade mini e-commerce checkout page — React + Vite + Playwright Multi-Browser Suite",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "test": "playwright test",
+    "test:all": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project=mobile-chrome --project=mobile-safari",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:report": "playwright show-report"
