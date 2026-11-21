@@ -29,10 +29,11 @@ export default function App() {
 
   const showToast = (type, title, message) => {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-    setToast({ type, title, message });
+    // Unique ID guarantees React remounts and replays the slide-down animation every time
+    setToast({ id: Date.now() + Math.random(), type, title, message });
     toastTimerRef.current = setTimeout(() => {
       setToast(null);
-    }, 4000);
+    }, 4500);
   };
 
   // Responsive mobile detection for search input placeholder
@@ -46,33 +47,40 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Listen to validation errors: show top toaster and auto-scroll to the missing field/deals
-  useEffect(() => {
-    if (validationError) {
-      if (validationError.includes('cart is empty')) {
-        showToast(
-          'error',
-          'Your Cart is Empty!',
-          'Please select and add at least one item from the deals below.'
-        );
-        const dealsSection = document.getElementById('deals-section');
-        dealsSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else if (validationError.includes('Name is required')) {
-        showToast(
-          'error',
-          'Full Name is Required!',
-          'Please enter your name in the delivery address field.'
-        );
-        const nameInput = document.getElementById('customer-name-input');
-        if (nameInput) {
-          nameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          nameInput.focus();
-          nameInput.classList.add('fk-input-highlight');
-          setTimeout(() => nameInput.classList.remove('fk-input-highlight'), 2500);
-        }
-      }
+  // Handle Place Order with immediate toast notification and smooth scrolling on every attempt
+  const handlePlaceOrder = () => {
+    if (cart.length === 0) {
+      showToast(
+        'error',
+        'Your Cart is Empty!',
+        'Please select and add at least one item from the deals below to proceed.'
+      );
+      const dealsSection = document.getElementById('deals-section');
+      dealsSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      placeOrder();
+      return;
     }
-  }, [validationError]);
+
+    if (customerName.trim() === '') {
+      showToast(
+        'error',
+        'Full Name is Required!',
+        'Please enter your recipient name in the delivery address field.'
+      );
+      const nameInput = document.getElementById('customer-name-input');
+      if (nameInput) {
+        nameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        nameInput.focus();
+        nameInput.classList.remove('fk-input-highlight');
+        void nameInput.offsetWidth; // force DOM reflow to re-animate glow
+        nameInput.classList.add('fk-input-highlight');
+      }
+      placeOrder();
+      return;
+    }
+
+    placeOrder();
+  };
 
   // Wrap addToCart to provide instant toast feedback
   const handleAddToCart = (product) => {
@@ -140,6 +148,7 @@ export default function App() {
       {/* ── Top Floating Toaster Notification ─────────────────── */}
       {toast && (
         <div
+          key={toast.id}
           data-testid="toast-notification"
           className={`fk-toast fk-toast-${toast.type}`}
           role="status"
@@ -242,7 +251,7 @@ export default function App() {
           {/* Step 1: Login */}
           <div className="step-item completed">
             <span className="step-circle">✓</span>
-            <span className="step-text">1. LOGIN</span>
+            <span className="step-text">LOGIN</span>
           </div>
 
           <div className={`step-line ${step2Completed || step2Active ? 'completed' : ''}`} />
@@ -250,7 +259,7 @@ export default function App() {
           {/* Step 2: Delivery Address */}
           <div className={`step-item ${step2Completed ? 'completed' : step2Active ? 'active' : ''}`}>
             <span className="step-circle">{step2Completed ? '✓' : '2'}</span>
-            <span className="step-text">2. DELIVERY ADDRESS</span>
+            <span className="step-text">DELIVERY ADDRESS</span>
           </div>
 
           <div className={`step-line ${step3Completed || step3Active ? 'completed' : ''}`} />
@@ -258,7 +267,7 @@ export default function App() {
           {/* Step 3: Order Summary */}
           <div className={`step-item ${step3Completed ? 'completed' : step3Active ? 'active' : ''}`}>
             <span className="step-circle">{step3Completed ? '✓' : '3'}</span>
-            <span className="step-text">3. ORDER SUMMARY</span>
+            <span className="step-text">ORDER SUMMARY</span>
           </div>
 
           <div className={`step-line ${step4Completed || step4Active ? 'completed' : ''}`} />
@@ -266,7 +275,7 @@ export default function App() {
           {/* Step 4: Payment / Confirmed */}
           <div className={`step-item ${step4Completed ? 'completed' : step4Active ? 'active' : ''}`}>
             <span className="step-circle">{step4Completed ? '✓' : '4'}</span>
-            <span className="step-text">{step4Completed ? '4. ORDER PLACED' : '4. PAYMENT'}</span>
+            <span className="step-text">{step4Completed ? 'ORDER PLACED' : 'PAYMENT'}</span>
           </div>
         </div>
       </nav>
@@ -678,7 +687,7 @@ export default function App() {
                     type="button"
                     data-testid="place-order-btn"
                     className="fk-btn-place-order"
-                    onClick={placeOrder}
+                    onClick={handlePlaceOrder}
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? 'Placing Order…' : 'Place Order'}
