@@ -34,16 +34,16 @@ All tests are written with **Playwright web-first assertions** (`expect(locator)
 
 | Test ID | Test Scenario | Verified Assertions | Chromium | Firefox | Mobile Chrome |
 |---|---|---|---|---|---|
-| **TC-01** *(Core)* | **Successful Checkout** | Order confirmation mounts, valid reference ID (`ORD-XXXXXX`) generated, recipient name & price verified | ✅ PASS (2.0s) | ✅ PASS (5.4s) | ✅ PASS (2.1s) |
-| **TC-02** *(Core)* | **Missing Field Blocks Checkout** | Blank/whitespace name triggers `"Full Name is required"`, blocks confirmation, preserves cart items | ✅ PASS (1.9s) | ✅ PASS (5.0s) | ✅ PASS (2.1s) |
-| **TC-03** *(Core)* | **Quantity Updates Exact Totals** | Incrementing qty from 1 to 2 updates line total (`₹1,598`) and order total (`₹1,598`) in real time | ✅ PASS (2.1s) | ✅ PASS (5.8s) | ✅ PASS (1.9s) |
-| **TC-04** | **Empty Cart Guard** | Empty cart triggers `"Your cart is empty"`, blocks order, preserves customer name input | ✅ PASS (2.0s) | ✅ PASS (5.7s) | ✅ PASS (1.6s) |
-| **TC-05** | **Zero Quantity Removal** | Decrementing item from qty 1 to 0 removes row from DOM and resets order total to `₹0` | ✅ PASS (1.3s) | ✅ PASS (3.0s) | ✅ PASS (1.4s) |
-| **TC-06** | **Rapid Double-Click Idempotency** | Firing two rapid clicks within 50ms produces strictly 1 confirmation and 1 reference ID | ✅ PASS (2.9s) | ✅ PASS (4.9s) | ✅ PASS (3.1s) |
-| **TC-07** | **Direct Item Removal** | Clicking "Remove" on item with qty 3 immediately deletes row and recalculates total to `₹0` | ✅ PASS (1.5s) | ✅ PASS (3.6s) | ✅ PASS (1.5s) |
-| **TC-08** | **Catalog Duplicate Addition** | Clicking "+ Add to Cart" on already added item increments quantity instead of adding duplicate row | ✅ PASS (1.5s) | ✅ PASS (2.9s) | ✅ PASS (1.4s) |
-| **TC-09** | **Clean State Reset** | "Continue Shopping / Start New Order" resets confirmation, cart, inputs, and total cleanly | ✅ PASS (1.5s) | ✅ PASS (2.6s) | ✅ PASS (1.7s) |
-| **TC-10** | **Floating Toaster Multi-Trigger** | Top toaster appears on empty cart, re-triggers on repeated clicks, and updates on missing name | ✅ PASS (1.6s) | ✅ PASS (3.5s) | ✅ PASS (3.4s) |
+| **TC-01** *(Core)* | **Successful Checkout** | Order confirmation mounts, valid reference ID (`ORD-XXXXXX`) generated, recipient name & price verified | PASS (2.0s) | PASS (5.4s) | PASS (2.1s) |
+| **TC-02** *(Core)* | **Missing Field Blocks Checkout** | Blank/whitespace name triggers `"Full Name is required"`, blocks confirmation, preserves cart items | PASS (1.9s) | PASS (5.0s) | PASS (2.1s) |
+| **TC-03** *(Core)* | **Quantity Updates Exact Totals** | Incrementing qty from 1 to 2 updates line total (`₹1,598`) and order total (`₹1,598`) in real time | PASS (2.1s) | PASS (5.8s) | PASS (1.9s) |
+| **TC-04** | **Empty Cart Guard** | Empty cart triggers `"Your cart is empty"`, blocks order, preserves customer name input | PASS (2.0s) | PASS (5.7s) | PASS (1.6s) |
+| **TC-05** | **Zero Quantity Removal** | Decrementing item from qty 1 to 0 removes row from DOM and resets order total to `₹0` | PASS (1.3s) | PASS (3.0s) | PASS (1.4s) |
+| **TC-06** | **Rapid Double-Click Idempotency** | Firing two rapid clicks within 50ms produces strictly 1 confirmation and 1 reference ID | PASS (2.9s) | PASS (4.9s) | PASS (3.1s) |
+| **TC-07** | **Direct Item Removal** | Clicking "Remove" on item with qty 3 immediately deletes row and recalculates total to `₹0` | PASS (1.5s) | PASS (3.6s) | PASS (1.5s) |
+| **TC-08** | **Catalog Duplicate Addition** | Clicking "+ Add to Cart" on already added item increments quantity instead of adding duplicate row | PASS (1.5s) | PASS (2.9s) | PASS (1.4s) |
+| **TC-09** | **Clean State Reset** | "Continue Shopping / Start New Order" resets confirmation, cart, inputs, and total cleanly | PASS (1.5s) | PASS (2.6s) | PASS (1.7s) |
+| **TC-10** | **Floating Toaster Multi-Trigger** | Top toaster appears on empty cart, re-triggers on repeated clicks, and updates on missing name | PASS (1.6s) | PASS (3.5s) | PASS (3.4s) |
 | **Summary** | **All 10 Scenarios** | **Exhaustive coverage of requirements and real-world edge cases** | **10 / 10 PASS** | **10 / 10 PASS** | **10 / 10 PASS** |
 
 **Total Suite Result:** **30 passed (28.4s)** across all 3 browser engines.
@@ -71,7 +71,7 @@ All tests are written with **Playwright web-first assertions** (`expect(locator)
   - Page smoothly scrolled to the deals catalog.
   - Customer name input remained untouched (`"Priya Sharma"`).
   - No order confirmation created.
-- **Verdict:** ✅ **PASS** (Matches automated test `TC-04` & `TC-10`).
+- **Verdict:** **PASS** (Matches automated test `TC-04` & `TC-10`).
 
 ---
 
@@ -91,7 +91,7 @@ All tests are written with **Playwright web-first assertions** (`expect(locator)
   - Synchronous `submittingRef` mutex locked immediately.
   - Single confirmation screen mounted with reference ID: `ORD-UR9SUY`.
   - DOM inspection confirmed exactly 1 `[data-testid="order-reference"]` node.
-- **Verdict:** ✅ **PASS** (Matches automated test `TC-06`).
+- **Verdict:** **PASS** (Matches automated test `TC-06`).
 
 ---
 
@@ -110,7 +110,7 @@ All tests are written with **Playwright web-first assertions** (`expect(locator)
   - Validation blocked checkout.
   - Toaster displayed at top; input focused with pulsing red border (`fk-input-highlight`).
   - Keyboard remains in cart with total ₹1,499.
-- **Verdict:** ✅ **PASS** (Matches automated test `TC-02` & `TC-10`).
+- **Verdict:** **PASS** (Matches automated test `TC-02` & `TC-10`).
 
 ---
 
@@ -126,7 +126,7 @@ All tests are written with **Playwright web-first assertions** (`expect(locator)
   - Page scrolls down to the deals section again.
 - **Actual Result:**
   - Toast re-mounted with unique ID (`toast.id`), slide-down animation replayed cleanly, and page smoothly scrolled to deals.
-- **Verdict:** ✅ **PASS** (Matches automated test `TC-10`).
+- **Verdict:** **PASS** (Matches automated test `TC-10`).
 
 ---
 
