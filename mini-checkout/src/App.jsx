@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PRODUCTS } from '@/constants/products';
 import { useCart } from '@/hooks/useCart';
 import { calcOrderTotal, calcLineTotal, formatCurrency } from '@/utils/currency';
@@ -23,10 +23,76 @@ export default function App() {
   // Search query state
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Scroll to top upon order confirmation
+  // Floating Toast Notification state
+  const [toast, setToast] = useState(null);
+  const toastTimerRef = useRef(null);
+
+  const showToast = (type, title, message) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToast({ type, title, message });
+    toastTimerRef.current = setTimeout(() => {
+      setToast(null);
+    }, 4000);
+  };
+
+  // Responsive mobile detection for search input placeholder
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < 640 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Listen to validation errors: show top toaster and auto-scroll to the missing field/deals
+  useEffect(() => {
+    if (validationError) {
+      if (validationError.includes('cart is empty')) {
+        showToast(
+          'error',
+          'Your Cart is Empty!',
+          'Please select and add at least one item from the deals below.'
+        );
+        const dealsSection = document.getElementById('deals-section');
+        dealsSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (validationError.includes('Name is required')) {
+        showToast(
+          'error',
+          'Full Name is Required!',
+          'Please enter your name in the delivery address field.'
+        );
+        const nameInput = document.getElementById('customer-name-input');
+        if (nameInput) {
+          nameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          nameInput.focus();
+          nameInput.classList.add('fk-input-highlight');
+          setTimeout(() => nameInput.classList.remove('fk-input-highlight'), 2500);
+        }
+      }
+    }
+  }, [validationError]);
+
+  // Wrap addToCart to provide instant toast feedback
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    showToast(
+      'info',
+      'Added to Cart',
+      `"${product.name}" (${formatCurrency(product.price)}) added to your order.`
+    );
+  };
+
+  // Scroll to top and show success toast upon order confirmation
   useEffect(() => {
     if (orderConfirmation) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast(
+        'success',
+        'Order Placed Successfully!',
+        `Your reference ID is ${orderConfirmation.referenceId}. Tracking activated.`
+      );
     }
   }, [orderConfirmation]);
 
@@ -71,6 +137,48 @@ export default function App() {
 
   return (
     <div className="fk-app">
+      {/* ── Top Floating Toaster Notification ─────────────────── */}
+      {toast && (
+        <div
+          data-testid="toast-notification"
+          className={`fk-toast fk-toast-${toast.type}`}
+          role="status"
+          aria-live="polite"
+        >
+          <div className="fk-toast-icon">
+            {toast.type === 'error' ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            ) : toast.type === 'success' ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="16" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12.01" y2="8" />
+              </svg>
+            )}
+          </div>
+          <div className="fk-toast-body">
+            <div className="fk-toast-title">{toast.title}</div>
+            <div className="fk-toast-msg">{toast.message}</div>
+          </div>
+          <button
+            type="button"
+            className="fk-toast-close"
+            onClick={() => setToast(null)}
+            aria-label="Close notification"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* ── Flipkart / Myntra Top Header ─────────────────────── */}
       <header className="fk-header">
         <div className="fk-header-inner">
@@ -98,7 +206,7 @@ export default function App() {
             <input
               type="text"
               className="fk-search-input"
-              placeholder="Search for electronics, mouse, keyboard, headphones..."
+              placeholder={isMobile ? "Search products..." : "Search for electronics, mouse, keyboard, headphones..."}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Search products"
@@ -251,7 +359,7 @@ export default function App() {
             {/* ── Left Column: Address, Cart Items & Catalog ─── */}
             <div className="fk-left-col">
               {/* Step 1: Customer Details */}
-              <section className="fk-card" aria-labelledby="delivery-heading">
+              <section id="delivery-address-card" className="fk-card" aria-labelledby="delivery-heading">
                 <div className="fk-step-header">
                   <div className="fk-step-title-group">
                     <span className={`fk-step-badge ${isAddressFilled ? 'done' : ''}`}>
@@ -415,7 +523,7 @@ export default function App() {
               </section>
 
               {/* Step 3: Product Store Deals (Catalog Section with Live Search) */}
-              <section className="fk-catalog-section" aria-labelledby="deals-heading">
+              <section id="deals-section" className="fk-catalog-section" aria-labelledby="deals-heading">
                 <div className="fk-step-header">
                   <div className="fk-step-title-group">
                     <span className="fk-step-badge done">★</span>
@@ -506,7 +614,7 @@ export default function App() {
                             type="button"
                             data-testid={`add-${product.id}`}
                             className={`fk-btn-add ${inCartItem ? 'in-cart' : ''}`}
-                            onClick={() => addToCart(product)}
+                            onClick={() => handleAddToCart(product)}
                             aria-label={`Add ${product.name} to cart`}
                           >
                             {inCartItem ? (
